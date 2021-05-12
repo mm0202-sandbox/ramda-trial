@@ -1,0 +1,3 @@
+@mm0202-package:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=[NODE_AUTH_TOKEN]
+always-auth=true
