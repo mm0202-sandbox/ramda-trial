@@ -1,34 +1,19 @@
-# ts-sandbox
+# ramda-trial
 
-## setup
-### start from template
+ramda お試しサンプルです。
 
-### tune .npmrc / private package を使う場合
-* `cp .npmrc.template .npmrc`
-* replace `[NODE_AUTH_TOKEN]`
+サンプルコードは`sandbox/sandbox.test.ts`にあります。
 
-### install packages
+動作確認する場合は、以下のコマンドでパッケージをインストールした後、テストを実行してください。
+
 ```shell script
 yarn install
+yarn run test # or yarn run test:watch
 ```
 
-### 動作確認
+npmの場合は以下
+
 ```shell script
-yarn test
+npm install
+npm run test # npm run test:watch
 ```
-
-### git commit
-
-### Jenkins を使う場合は
-#### tune .env
-* `cp .env.template .env`
-* tune for project
-
-#### create pipeline at jenkins
-
-#### push
-
-## Firebaseエミュレータを使う場合は
-以下をエミュレータと合わせる
-* `firebase use [エミュレータのプロジェクトID]`
-* `firebase.json`や`docker-compose.yml`のポート指定をエミュレータのポートと合わせる
