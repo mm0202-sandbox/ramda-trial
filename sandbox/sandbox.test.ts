@@ -25,128 +25,6 @@ import {
 import { curry as lodashCurry } from 'lodash'
 
 describe('sandbox', () => {
-  describe('ramdaのpipeとcompose', () => {
-    describe('from https://qiita.com/akameco/items/e5bbefefd5940dff84d9', () => {
-      test('compose', () => {
-        const calcCompose = compose(Math.abs, add(1), multiply(2))
-        expect(calcCompose(-4)).toBe(7)
-      })
-
-      test('pipe', () => {
-        const calcPipe = pipe(Math.abs, add(1), multiply(2))
-        expect(calcPipe(-4)).toBe(10)
-      })
-    })
-  })
-
-  describe('超強力な関数型プログラミング用ライブラリ Ramda.js を学ぼう', () => {
-    type User = {
-      name: string
-      email: string
-      age: number
-      address: {
-        zipcode: string
-      }
-    }
-
-    const user = (): User => ({
-      name: 'Bret',
-      email: 'bred@april.biz',
-      age: 22,
-      address: {
-        zipcode: '92998-3874',
-      },
-    })
-
-    describe('from https://tech.recruit-mp.co.jp/front-end/post-16249/', () => {
-      describe('オブジェクトを操作してみる', () => {
-        test('prop', () => {
-          expect(prop('name', user())).toBe('Bret')
-        })
-
-        test('assoc', () => {
-          expect(assoc<number, User, string>('age', 23, user())).toEqual({
-            ...user(),
-            age: 23,
-          })
-        })
-      })
-
-      test('ほぼ全ての API がカリー化を備えている', () => {
-        const updateAge = assoc<string>('age')
-        expect(updateAge(23)(user())).toEqual({
-          ...user(),
-          age: 23,
-        })
-        expect(updateAge(24)(user())).toEqual({
-          ...user(),
-          age: 24,
-        })
-      })
-    })
-
-    describe('from https://tech.recruit-mp.co.jp/front-end/post-16290/', () => {
-      describe('オブジェクトのプロパティにアクセスする lens 関数を作ってみる', () => {
-        const ageLens = () => lens(prop<string>('age'), assoc<string>('age'))
-
-        test('getter', () => {
-          expect(view(ageLens(), user())).toBe(22)
-        })
-
-        test('setter', () => {
-          const newUser = set(ageLens(), 23, user())
-          expect(newUser).toEqual({
-            ...user(),
-            age: 23,
-          })
-        })
-      })
-
-      describe('ネストしたプロパティに直接アクセスするには', () => {
-        test('lensPath', () => {
-          const zipcodeLens = lensPath(['address', 'zipcode'])
-          expect(view(zipcodeLens, user())).toBe('92998-3874')
-        })
-
-        test('lensPath with Array', () => {
-          const post = {
-            id: 1,
-            title: 'ポラーノの広場',
-            body: `あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。`,
-            tags: [
-              { name: '小説', slug: 'novel' },
-              { name: '宮沢賢治', slug: 'kenji-miyazawa' },
-            ],
-          }
-
-          const tagLens = lensPath(['tags', 1, 'name'])
-
-          expect(view(tagLens, post)).toBe('宮沢賢治')
-        })
-
-        test('lensIndex', () => {
-          const headLens = lensIndex(0)
-
-          expect(view(headLens, ['foo', 'bar', 'baz'])).toBe('foo')
-          expect(set(headLens, 'hoge', ['foo', 'bar', 'baz'])).toStrictEqual([
-            'hoge',
-            'bar',
-            'baz',
-          ])
-        })
-
-        test('lensProp', () => {
-          // どちらも同じ
-          const ageLens1 = lens(prop<string>('age'), assoc<string>('age'))
-          const ageLens2 = lensProp<User>('age')
-
-          expect(view(ageLens1, user())).toBe(22)
-          expect(view(ageLens2, user())).toBe(22)
-        })
-      })
-    })
-  })
-
   describe('JavaScriptで関数型プログラミング！Ramda.jsのはじめかた ', () => {
     describe('from https://www.webprofessional.jp/functional-programming-with-ramda/', () => {
       describe('カリー化', () => {
@@ -278,13 +156,136 @@ describe('sandbox', () => {
     })
   })
 
-  /**
-   * # summary
-   * - カリー化した関数のIDEドキュメント表示について
-   *  - PhpStormの場合だと、ramdaは詳細で、引数も詳しめ。lodashはドキュメント表示はほぼなし
-   *  - VSCodeの場合は、どちらも詳細で大差なし
-   */
+  describe('超強力な関数型プログラミング用ライブラリ Ramda.js を学ぼう', () => {
+    type User = {
+      name: string
+      email: string
+      age: number
+      address: {
+        zipcode: string
+      }
+    }
+
+    const user = (): User => ({
+      name: 'Bret',
+      email: 'bred@april.biz',
+      age: 22,
+      address: {
+        zipcode: '92998-3874',
+      },
+    })
+
+    describe('from https://tech.recruit-mp.co.jp/front-end/post-16249/', () => {
+      describe('オブジェクトを操作してみる', () => {
+        test('prop', () => {
+          expect(prop('name', user())).toBe('Bret')
+        })
+
+        test('assoc', () => {
+          expect(assoc<number, User, string>('age', 23, user())).toEqual({
+            ...user(),
+            age: 23,
+          })
+        })
+      })
+
+      test('ほぼ全ての API がカリー化を備えている', () => {
+        const updateAge = assoc<string>('age')
+        expect(updateAge(23)(user())).toEqual({
+          ...user(),
+          age: 23,
+        })
+        expect(updateAge(24)(user())).toEqual({
+          ...user(),
+          age: 24,
+        })
+      })
+    })
+
+    describe('from https://tech.recruit-mp.co.jp/front-end/post-16290/', () => {
+      describe('オブジェクトのプロパティにアクセスする lens 関数を作ってみる', () => {
+        const ageLens = () => lens(prop<string>('age'), assoc<string>('age'))
+
+        test('getter', () => {
+          expect(view(ageLens(), user())).toBe(22)
+        })
+
+        test('setter', () => {
+          const newUser = set(ageLens(), 23, user())
+          expect(newUser).toEqual({
+            ...user(),
+            age: 23,
+          })
+        })
+      })
+
+      describe('ネストしたプロパティに直接アクセスするには', () => {
+        test('lensPath', () => {
+          const zipcodeLens = lensPath(['address', 'zipcode'])
+          expect(view(zipcodeLens, user())).toBe('92998-3874')
+        })
+
+        test('lensPath with Array', () => {
+          const post = {
+            id: 1,
+            title: 'ポラーノの広場',
+            body: `あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。`,
+            tags: [
+              { name: '小説', slug: 'novel' },
+              { name: '宮沢賢治', slug: 'kenji-miyazawa' },
+            ],
+          }
+
+          const tagLens = lensPath(['tags', 1, 'name'])
+
+          expect(view(tagLens, post)).toBe('宮沢賢治')
+        })
+
+        test('lensIndex', () => {
+          const headLens = lensIndex(0)
+
+          expect(view(headLens, ['foo', 'bar', 'baz'])).toBe('foo')
+          expect(set(headLens, 'hoge', ['foo', 'bar', 'baz'])).toStrictEqual([
+            'hoge',
+            'bar',
+            'baz',
+          ])
+        })
+
+        test('lensProp', () => {
+          // どちらも同じ
+          const ageLens1 = lens(prop<string>('age'), assoc<string>('age'))
+          const ageLens2 = lensProp<User>('age')
+
+          expect(view(ageLens1, user())).toBe(22)
+          expect(view(ageLens2, user())).toBe(22)
+        })
+      })
+    })
+  })
+
+  describe('ramdaのpipeとcompose', () => {
+    describe('from https://qiita.com/akameco/items/e5bbefefd5940dff84d9', () => {
+      test('compose', () => {
+        const calcCompose = compose(Math.abs, add(1), multiply(2))
+        expect(calcCompose(-4)).toBe(7)
+      })
+
+      test('pipe', () => {
+        const calcPipe = pipe(Math.abs, add(1), multiply(2))
+        expect(calcPipe(-4)).toBe(10)
+      })
+    })
+  })
+
   describe('lodashのcurryと比較', () => {
+    /**
+     * # summary
+     * - カリー化した関数のIDEドキュメント表示について
+     *  - PhpStormの場合だと、ramdaは詳細で、引数も詳しめ。lodashはドキュメント表示はほぼなし
+     *  - VSCodeの場合は、どちらも詳細で大差なし
+     */
+
     const sampleFunction = (a: string, b: string, c: number) => ({
       a,
       b,
